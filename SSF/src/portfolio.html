@@ -17,60 +17,7 @@
 
 
 {% block main %}
-
-    <!-- <div class="column is-one-third"> -->
-        <!-- <div class="card is-primary"> -->
-        <!--     <div class="card-content "> -->
-        <!--         <p class="title has-text-centered">{{portfolio.name}}</p> -->
-        <!--         <p class="subtitle"> -->
-        <!--         <!-1- <ul> -1-> -->
-        <!--         <!-1-     <li>Basic Balance: {{ portfolio.basic_balance  }}$</li> -1-> -->
-        <!--         <!-1-     <li>Monthly Pay: {{ portfolio.monthly_pay  }}$</li> -1-> -->
-        <!--         <!-1-     <li>Target Money: {{ portfolio.target  }}$</li> -1-> -->
-        <!--         <!-1- </ul> -1-> -->
-        <!--        </p> -->
-        <!--        {% if portfolio.get_collection %} -->
-        <!--        <img src="{{portfolio.get_collection.chart.url}}" class="has-text-center"> -->
-        <!--         <ul> -->
-        <!--             <li>Profit: {{ portfolio.get_profit }}%</li> -->
-        <!--             <li>Risk: {{ portfolio.get_risk }}%</li> -->
-        <!--             <li>You need {{ portfolio.years|floatformat:2 }} years and {{portfolio.months|floatformat:2}} months to that target</li> -->
-        <!--         </ul> -->
-        <!--        {% endif %} -->
-        <!--      </div> -->
-        <!--     <footer class="card-footer has-text-centered"> -->
-        <!--         <a class="card-footer-item" href="{{ portfolio.get_absolute_url }}">View</a> -->
-        <!--     </footer> -->
-        <!-- </div> -->
-    <!-- </div> -->
-
-<!-- <div class="container"> -->
-<!--   <div class="columns"> -->
-
-<!--     <div class="column is-3"> -->
-<!--       <figure class="image is-square"> -->
-<!--         <img src="{{ portfolio.get_collection.chart.url }}"> -->
-<!--       </figure> -->
-<!--     </div> -->
-    
-<!--     <div class="column is-6"> -->
-<!--       <h1 class="title is-3">{{ name }}</h1> -->
-<!--       <div class="content"> -->
-<!--         <p>Basic Balance: {{ basic_balance }}</p> -->
-<!--         <p>Monthly Pay: {{ monthly_pay }}</p> -->
-<!--         <p>Target Money: {{ target_money }}</p> -->
-<!--       </div> -->
-<!--     </div> -->
-    
-<!--     <div class="column is-3"> -->
-<!--       <canvas id="chart"></canvas> -->
-<!--     </div> -->
- 
-<!--   </div> -->
-<!-- </div> -->
-
 <div class="title has-text-centered">{{portfolio.name}}</div>
-
 <div class="column is-6 is-offset-3">
   <figure class="image is-3by3">
       <img src="{{portfolio.get_collection.chart.url}}" class="is-large">
@@ -85,7 +32,7 @@
       <p>Monthly Pay: ${{portfolio.monthly_pay}}</p>
       <p>Target Money: ${{portfolio.target}}</p>
       <p>Profit: {{portfolio.get_profit}}%</p>
-      <p>Risk: {{portfolio.get_risk}}%</p>
+      <p>Risk: {{portfolio.get_risk}}</p>
     </div>
   </div>
 </div>

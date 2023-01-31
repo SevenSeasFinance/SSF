@@ -142,13 +142,25 @@
         .then(data => {
             console.log(data);
             container.innerHTML = "";
-            vdata = data;
-            for (let collection of vdata.collections) {
+            for (let collection of data.collections) {
 
             let b = data.portfolio.basic_balance;
             let p = collection.profit;
             let mp = data.portfolio.monthly_pay;
             let tm = data.portfolio.target_money;
+
+            let risk = collection.risk;
+            let result = "";
+            if(risk <= 10) {
+                result = "So Low";
+            } else if(risk <= 20) {
+                result = "Low";
+            } else if(risk <= 30){
+                result = "Mid";
+            } else if (40 >= risk) {
+                result = "High";
+            }
+
 
             let x = TMT(b,p,mp,tm);
             let years_x = years(x);
@@ -160,7 +172,7 @@
                   <img src="${collection.url}" class="has-text-center">
                   <ul>
                     <li>Profit: ${collection.profit}% </li>
-                    <li>Risk: ${collection.risk}%</li>
+                    <li>Risk: ${result}</li>
                     <li>You need ${years_x} years and ${months_x} months to that target</li>
                   </ul>
                 </div>

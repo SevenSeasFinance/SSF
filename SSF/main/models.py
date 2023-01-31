@@ -84,7 +84,16 @@ class Portfolio(models.Model):
         return self.get_collection().profit
 
     def get_risk(self):
-        return self.get_collection().risk
+        risk = self.get_collection().risk
+        if risk <= 10:
+            result = "So Low"
+        elif risk <= 20:
+            result = "Low"
+        elif risk <= 30:
+            result = "mid"
+        elif 40 >= risk:
+            result = "High"
+        return result
 
     def years(self):
         x = target_money_time(self.basic_balance, self.get_profit(),
