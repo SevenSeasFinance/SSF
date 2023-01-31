@@ -1,11 +1,12 @@
 {% extends "base.html" %} 
 {% load static %}
 {% block title %}Login{% endblock %}
-
-{% block body %}
+{% block navbar_start %}{% endblock %}
+{% block navbar_end %}{% endblock %}
+{% block main %}
 <div class="container has-text-centered">
-  <div class="column is-4 is-offset-4">
-    <div class="box">
+  <div class="column is-4 is-offset-4 ">
+    <div class="box ">
 
       <form action="/account/login/" method="POST">{% csrf_token %}
             <div class="field">
@@ -27,17 +28,14 @@
                     <button class="button is-primary">Login</button>
                 </div>
             </div>
-            <a href="/account/signup/">I don't have an account?</a>
        </form>
 
        {% if error %}
        <div style="color: red;">{{error}}</div>
        {% endif %}
+       <hr>
+       <a href="/account/signup/">I don't have an account?</a>
     </div>
   </div>
 </div>
-{% endblock %}
-
-{% block js %}
-	<script src="{% static 'js/login.js' %}"></script>
 {% endblock %}

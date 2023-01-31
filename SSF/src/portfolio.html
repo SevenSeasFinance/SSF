@@ -7,7 +7,7 @@
     Dashboard
 </a>
 
-<a class="navbar-item is-active" href="/portfolio/create/">
+<a class="navbar-item" href="/portfolio/create/">
     Portfolio
 </a>
 <a class="navbar-item" href="/about">
@@ -18,164 +18,78 @@
 
 {% block main %}
 
-<div class="container has-text-centered">
-  <div class="column is-4 is-offset-4">
-    <div class="box">
+    <!-- <div class="column is-one-third"> -->
+        <!-- <div class="card is-primary"> -->
+        <!--     <div class="card-content "> -->
+        <!--         <p class="title has-text-centered">{{portfolio.name}}</p> -->
+        <!--         <p class="subtitle"> -->
+        <!--         <!-1- <ul> -1-> -->
+        <!--         <!-1-     <li>Basic Balance: {{ portfolio.basic_balance  }}$</li> -1-> -->
+        <!--         <!-1-     <li>Monthly Pay: {{ portfolio.monthly_pay  }}$</li> -1-> -->
+        <!--         <!-1-     <li>Target Money: {{ portfolio.target  }}$</li> -1-> -->
+        <!--         <!-1- </ul> -1-> -->
+        <!--        </p> -->
+        <!--        {% if portfolio.get_collection %} -->
+        <!--        <img src="{{portfolio.get_collection.chart.url}}" class="has-text-center"> -->
+        <!--         <ul> -->
+        <!--             <li>Profit: {{ portfolio.get_profit }}%</li> -->
+        <!--             <li>Risk: {{ portfolio.get_risk }}%</li> -->
+        <!--             <li>You need {{ portfolio.years|floatformat:2 }} years and {{portfolio.months|floatformat:2}} months to that target</li> -->
+        <!--         </ul> -->
+        <!--        {% endif %} -->
+        <!--      </div> -->
+        <!--     <footer class="card-footer has-text-centered"> -->
+        <!--         <a class="card-footer-item" href="{{ portfolio.get_absolute_url }}">View</a> -->
+        <!--     </footer> -->
+        <!-- </div> -->
+    <!-- </div> -->
 
-        <div class="field">
-            <label class="label">Name</label>
-            <div class="control">
-                <input id="name" class="input" type="text" name="name"  placeholder="name your portfolio" required>
-            </div>
-        </div>
+<!-- <div class="container"> -->
+<!--   <div class="columns"> -->
 
-        <div class="field">
-            <label class="label">Basic Balance</label>
-            <div class="control">
-                <input id="basic_balance" class="input" type="number" name="basic_balance" placeholder="Basic Balance" required>
-            </div>
-        </div>
+<!--     <div class="column is-3"> -->
+<!--       <figure class="image is-square"> -->
+<!--         <img src="{{ portfolio.get_collection.chart.url }}"> -->
+<!--       </figure> -->
+<!--     </div> -->
+    
+<!--     <div class="column is-6"> -->
+<!--       <h1 class="title is-3">{{ name }}</h1> -->
+<!--       <div class="content"> -->
+<!--         <p>Basic Balance: {{ basic_balance }}</p> -->
+<!--         <p>Monthly Pay: {{ monthly_pay }}</p> -->
+<!--         <p>Target Money: {{ target_money }}</p> -->
+<!--       </div> -->
+<!--     </div> -->
+    
+<!--     <div class="column is-3"> -->
+<!--       <canvas id="chart"></canvas> -->
+<!--     </div> -->
+ 
+<!--   </div> -->
+<!-- </div> -->
 
-        <div class="field">
-            <label class="label">Monthly Pay</label>
-            <div class="control">
-                <input id="monthly_pay" class="input" type="number" name="monthly_pay" placeholder="Monthly Pay" required>
-            </div>
-        </div>
+<div class="title has-text-centered">{{portfolio.name}}</div>
 
-        <div class="field">
-            <label class="label">Target Money</label>
-            <div class="control">
-                <input id="target_money" class="input" type="number" name="target_money" placeholder="Target Money" required>
-            </div>
-        </div>
+<div class="column is-6 is-offset-3">
+  <figure class="image is-3by3">
+      <img src="{{portfolio.get_collection.chart.url}}" class="is-large">
+  </figure>
+</div>
 
-        <div class="field has-text-centered">
-            <div class="control">
-                <button class="button is-primary" onclick="postb()">GO</button>
-            </div>
-        </div>
-
+<div class="columns is-centered">
+  <div class="column is-half">
+   <div class="has-text-centered">
+      <p></p>
+      <p>Basic Balance: ${{portfolio.basic_balance}}</p>
+      <p>Monthly Pay: ${{portfolio.monthly_pay}}</p>
+      <p>Target Money: ${{portfolio.target}}</p>
+      <p>Profit: {{portfolio.get_profit}}%</p>
+      <p>Risk: {{portfolio.get_risk}}%</p>
     </div>
   </div>
 </div>
 
-<div id="container" class="columns is-multiline"></div>
-
-{% csrf_token %}
-<script>
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const container = document.getElementById("container");
-    const name = document.getElementById("name");
-    const monthly_pay  = document.getElementById("monthly_pay");
-    const basic_balance  = document.getElementById("basic_balance");
-    const target_money  = document.getElementById("target_money");
-    var data;
-    function postData(url = '', data = {}) {
-        // Default options are marked with *
-        const request = new Request(
-            url,
-            {
-                headers: {
-                    'X-CSRFToken': csrftoken,
-                    'Content-Type': 'application/json',
-                }
-            }
-        );
-        return fetch(request, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *client
-            body: JSON.stringify(data) // body data type must match "Content-Type" header
-        }).then(response => response.json()); // parses JSON response into native JavaScript objects
-    }
-
-    function getData(url = '') {
-        return fetch(url).then(response => response.json());
-    }
-
-    /* 
-
-    Target Money Time
-        bb: basic balance
-        p: profit
-        mp: monthly pay 
-        tm: target money
-    */
-
-    function TMT(bb, p, mp, tm) {
-        let r = ((bb * p)/ 100) / 12;
-        let m = 0;
-        if(r >= tm) {
-            return 0;
-        } else {
-            while(((bb * p)/100)/12 < tm) {
-                m += 1;
-                bb += mp;
-                if(m % 12 == 0) {
-                    bb += (bb*p)/100;
-                }
-            }
-        }
-        return m;
-    }
-
-    function years(x) {
-        return (x<=0)? 0: x/12;
-    }
-
-    function months(x) {
-        return (x<=0)? 0: x%12;
-    }
-
-    function postb()
-    {
-        postData('/collections/', {
-            name         : name.value,
-            monthly_pay  : parseInt(monthly_pay.value),
-            basic_balance  : parseInt(basic_balance.value),
-            target_money : parseInt(target_money.value),
-        })
-        .then(data => {
-            console.log(data);
-            container.innerHTML = "";
-            vdata = data;
-            for (let collection of vdata.collections) {
-
-            let b = data.portfolio.basic_balance;
-            let p = collection.profit;
-            let mp = data.portfolio.monthly_pay;
-            let tm = data.portfolio.target_money;
-
-            let x = TMT(b,p,mp,tm);
-            let years_x = years(x);
-            let months_x = months(x);
-            let collection_c = `
-            <div class="column is-one-third">
-              <div class="card is-primary">
-                <div class="card-content">
-                  <p class="title has-text-center">Collection ${collection.id}</p>
-                  <img src="https://i0.wp.com/portfoliocharts.com/wp-content/uploads/2020/08/icon-pinwheel.jpg?fit=250%2C250&ssl=1" class="has-text-center">
-                  <ul>
-                    <li>Profit: ${collection.profit}% </li>
-                    <li>Risk: ${collection.risk}%</li>
-                    <li>You need ${years_x} years and ${months_x} months to that target</li>
-                  </ul>
-                </div>
-                <footer class="card-footer has-text-center">
-                    <a class="card-footer-item is-rounded" href="/collections/select/${collection.id}/${data.portfolio.name}/${b}/${mp}/${tm}/">Pick</a>
-                </footer>
-              </div>
-            </div>
-          `;
-            container.innerHTML += collection_c;
-            }
-        });
-    }
-</script>
 
 {% endblock %}
 

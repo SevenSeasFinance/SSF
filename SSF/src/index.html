@@ -14,30 +14,30 @@
 
 
 {% block main %}
-
 <div class="columns is-multiline">
     {% for portfolio in portfolios %}
-    <div class="column is-one-quarter">
+    <div class="column is-one-third">
         <div class="card is-primary">
-            <div class="card-content has-text-centered">
-                <p class="title">{{protfolio.name}}</p>
+            <div class="card-content ">
+                <p class="title has-text-centered">{{portfolio.name}}</p>
                 <p class="subtitle">
-                <ul>
-                    <li>{{ portfolio.basic_balance  }}$</li>
-                    <li>{{ portfolio.monthly_pay  }}$</li>
-                    <li>{{ portfolio.target  }}$</li>
-                </ul>
+                <!-- <ul> -->
+                <!--     <li>Basic Balance: {{ portfolio.basic_balance  }}$</li> -->
+                <!--     <li>Monthly Pay: {{ portfolio.monthly_pay  }}$</li> -->
+                <!--     <li>Target Money: {{ portfolio.target  }}$</li> -->
+                <!-- </ul> -->
                </p>
-               {% if portfolio.collection %}
+               {% if portfolio.get_collection %}
+               <img src="{{portfolio.get_collection.chart.url}}" class="has-text-center">
                 <ul>
                     <li>Profit: {{ portfolio.get_profit }}%</li>
                     <li>Risk: {{ portfolio.get_risk }}%</li>
-                    <li>You need {{ portfolio.years }} years and {{portfolio.months}} months to that target</li>
+                    <li>You need {{ portfolio.years|floatformat:2 }} years and {{portfolio.months|floatformat:2}} months to that target</li>
                 </ul>
                {% endif %}
              </div>
             <footer class="card-footer has-text-centered">
-                <a class="card-footer-item" href="{{ protfolio.get_absolute_url }}">View</a>
+                <a class="card-footer-item" href="{{ portfolio.get_absolute_url }}">View</a>
             </footer>
         </div>
     </div>

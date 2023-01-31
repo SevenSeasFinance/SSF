@@ -25,7 +25,20 @@ def index(request):
 def portfolio_create(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(prefix_login_url)
-    return render(request, "portfolio.html")
+    return render(request, "portfolio_create.html")
+
+
+# portfolios
+def portfolio(request, id):
+    portfolio_o = get_object_or_404(Portfolio, id=id)
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(prefix_login_url)
+
+    if request.user != portfolio_o.investor:
+        return HttpResponseRedirect("/")
+
+    context = {"portfolio": portfolio_o}
+    return render(request, "portfolio.html", context)
 
 
 # This function for get profiles and output as json
@@ -59,11 +72,12 @@ def collections(request):
                 {
                  "id": collection.id,
                  "profit": int(collection.profit),
-                 "risk": int(collection.risk)
+                 "risk": int(collection.risk),
+                 "url": collection.chart.url
                  }
 
-                for collection in Collection.objects.filter(portfolio__isnull=True)
-                # for collection in Collection.objects.all()
+                # for collection in Collection.objects.filter(portfolio__isnull=True)
+                for collection in Collection.objects.all()
                 ]
 
         data = {
@@ -78,10 +92,11 @@ def select_collection(request, id, name, b, mp, tm):
         return HttpResponseRedirect(prefix_login_url)
     # print(id, name, b, mp, tm)
 
-    Portfolio.objects.create(
+    p = Portfolio.objects.create(
             name=name, basic_balance=b, monthly_pay=mp, target=tm,
-            investor=request.user, collection=Collection.objects.get(id=id)
+            investor=request.user
             )
+    p.collection.add(Collection.objects.get(id=id))
     return HttpResponseRedirect("/")
 
 

@@ -53,6 +53,7 @@ class Collection(models.Model):
     profit = models.DecimalField(max_digits=50, decimal_places=0, null=False)
     risk = models.DecimalField(max_digits=50, decimal_places=0, null=False)
     invesments = models.ManyToManyField(Invesment)
+    chart = models.ImageField(upload_to='images')
 
 
 # This portfolio for the Investor
@@ -69,20 +70,21 @@ class Portfolio(models.Model):
             on_delete=models.CASCADE
             )
 
-    collection = models.OneToOneField(
-            Collection,
-            null=True,
-            on_delete=models.CASCADE
+    collection = models.ManyToManyField(
+            Collection
             )
 
     def __str__(self):
         return self.name
 
+    def get_collection(self):
+        return self.collection.last()
+
     def get_profit(self):
-        return self.collection.profit
+        return self.get_collection().profit
 
     def get_risk(self):
-        return self.collection.risk
+        return self.get_collection().risk
 
     def years(self):
         x = target_money_time(self.basic_balance, self.get_profit(),
@@ -94,8 +96,8 @@ class Portfolio(models.Model):
                               self.monthly_pay, self.target)
         return 0 if (x <= 0) else x % 12
 
-    # def get_absolute_url(self):
-    #     return '/investor/portfolio/%d/' % self.pk
+    def get_absolute_url(self):
+        return '/portfolio/%d/' % self.pk
 
     class Meta:
         ordering = ['name', 'created']

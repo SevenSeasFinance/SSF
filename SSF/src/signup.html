@@ -1,10 +1,8 @@
 {% extends "base.html" %}
-{% load static %}
 {% block title %}Sign Up{% endblock %}
-
-{% block body %}
-
-
+{% block navbar_start %}{% endblock %}
+{% block navbar_end %}{% endblock %}
+{% block main %}
 <div class="container has-text-centered">
     <div class="column is-4 is-offset-4">
         <div class="box">
@@ -62,13 +60,9 @@
                 {% endfor %}
 
             </form>
+            <hr>
+            <a href="/account/login/">I have an account?</a>
         </div>
     </div>
 </div>
 {% endblock %}
-
-{% block js %}
-	<script src="{% static 'js/signup.js' %}"></script>
-{% endblock %}
-
-	
