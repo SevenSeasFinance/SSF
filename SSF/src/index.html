@@ -1,0 +1,57 @@
+{%  extends 'base.html' %}
+
+{% block navbar_start %}	
+<a class="navbar-item is-active" href="/">
+    Dashboard
+</a>
+<a class="navbar-item" href="/portfolio/create/">
+    Portfolio
+</a>
+<a class="navbar-item" href="/about/">
+    About us
+</a>
+{% endblock %}
+
+
+{% block main %}
+
+<div class="columns is-multiline">
+    {% for portfolio in portfolios %}
+    <div class="column is-one-quarter">
+        <div class="card is-primary">
+            <div class="card-content has-text-centered">
+                <p class="title">{{protfolio.name}}</p>
+                <p class="subtitle">
+                <ul>
+                    <li>{{ portfolio.basic_balance  }}$</li>
+                    <li>{{ portfolio.monthly_pay  }}$</li>
+                    <li>{{ portfolio.target  }}$</li>
+                </ul>
+               </p>
+               {% if portfolio.collection %}
+                <ul>
+                    <li>Profit: {{ portfolio.get_profit }}%</li>
+                    <li>Risk: {{ portfolio.get_risk }}%</li>
+                    <li>You need {{ portfolio.years }} years and {{portfolio.months}} months to that target</li>
+                </ul>
+               {% endif %}
+             </div>
+            <footer class="card-footer has-text-centered">
+                <a class="card-footer-item" href="{{ protfolio.get_absolute_url }}">View</a>
+            </footer>
+        </div>
+    </div>
+
+    {% empty  %}
+    <section class="column hero is-warning has-text-centered">
+        <div class="hero-body has-text-centered">
+            <p class="title">
+            There are no protfolios.
+            </p>
+            <p class="subtitle">
+            Create one from Protfolios tabs
+            </p>
+        </div>
+    </section>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block main %}
+
+<!-- <form class="form-container" action="/profiles/" method="POST"> -->
+    <!-- <input id="name" name="name" type="text" placeholder="name" title="" pattern="^.{0,50}$" required> -->
+    <!-- <br> -->
+
+    <input id="basic_balance" name="basic_balance" type="number" placeholder="Basic balance" title="" pattern="" required>
+    <br>
+    
+    <input id="ppy" name="ppy" type="number" placeholder="profit per year" title="" pattern="" required>
+    <br>
+
+    <!-- <input id="building" name="building_year" type="number" placeholder="building year" title="" pattern="" required> -->
+    <!-- <br> -->
+    
+    <input id="target_money" name="target_money" type="number" placeholder="target money" title="" pattern="" required>
+    <br>
+    
+    <button class="btn" onclick="postb()">GO</button>
+<!-- </form> -->
+<!-- <div> -->
+<!--   <canvas id="myChart"></canvas> -->
+<!-- </div> -->
+
+<!-- <div class="columns"> -->
+<!--   <div class="column">1</div> -->
+<!--   <div class="column">2</div> -->
+<!--   <div class="column">3</div> -->
+<!--   <div class="column">4</div> -->
+<!-- </div> -->
+
+<div class="container" id="container"></div>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+<!-- <script> -->
+<!--   const ctx = document.getElementById('myChart'); -->
+
+<!--   new Chart(ctx, { -->
+<!--     type: 'bar', -->
+<!--     data: { -->
+<!--       labels: ['Gold', 'stucks', 'Betcon', 'snadat'], -->
+<!--       datasets: [ -->
+<!--           { -->
+<!--               label: 'money', -->
+<!--               data: [10, 50, 30, 20], -->
+<!--               borderWidth: 1 -->
+<!--           }, -->
+<!--           { -->
+<!--               label: 'risk', -->
+<!--               data: [10, 50, 30, 20], -->
+<!--               borderWidth: 1 -->
+<!--           }, -->
+<!--           { -->
+<!--               label: 'xxxx', -->
+<!--               data: [10, 50, 30, 20], -->
+<!--               borderWidth: 1 -->
+<!--           }, -->
+<!--       ] -->
+<!--     }, -->
+<!--     options: { -->
+<!--       scales: { -->
+<!--         y: { -->
+<!--           beginAtZero: true -->
+<!--         } -->
+<!--       } -->
+<!--     } -->
+  <!-- }); -->
+<!-- </script> -->
+
+{% csrf_token %}
+<script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // container for profiles
+    var container = document.getElementById("container");
+
+    // value to get profiles
+    var basic_balance = document.getElementById("basic_balance");
+    var ppy = document.getElementById("ppy");
+    var target_money = document.getElementById("target_money");
+
+
+    function postData(url = '', data = {}) {
+        // Default options are marked with *
+        const request = new Request(
+            url,
+            {
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
+        return fetch(request, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *client
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        }).then(response => response.json()); // parses JSON response into native JavaScript objects
+    }
+
+    function getData(url = '') {
+        return fetch(url).then(response => response.json());
+    }
+
+    // To create many profiles in spcefic profiles
+    function create_profiles(data) {
+
+        let card = document.createElement("div");
+        for (let profile of data) {
+
+            let risk = document.createElement("div");
+            risk.innerHTML = profile["risk"];
+            card.appendChild(risk);
+
+            let balance = document.createElement("div");
+            balance.innerHTML = profile["basic_balance"];
+            card.appendChild(balance);
+
+            let balance = document.createElement("div");
+            balance.innerHTML = profile[""];
+            card.appendChild(balance);
+
+        }
+
+        container.appendChild();
+    }
+
+
+
+    function postb()
+    {
+        postData('/profiles/', {
+            basic_balance:  basic_bal.value,
+        })
+        .then(data => {
+            console.log(data);
+            create_profiles(data);
+        });
+    }
+</script>
+
+{% endblock %}
+
+

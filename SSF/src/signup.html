@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Sign Up{% endblock %}
+
+{% block body %}
+
+
+<div class="container has-text-centered">
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+
+            <form action="/account/signup/" method="POST"> {% csrf_token %}
+
+                <div class="field">
+                    <label class="label">First Name</label>
+                    <div class="control">
+                        <input class="input" name="first_name" type="text" placeholder="first_name" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Last Name</label>
+                    <div class="control">
+                        <input class="input" name="last_name" type="text" placeholder="last_name" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">User Name</label>
+                    <div class="control">
+                        <input class="input" name="username" type="text" placeholder="User Name" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input class="input" id="password" name="password" type="password"
+                                                                           placeholder="password" title="" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Confirm Password</label>
+                    <div class="control">
+                        <input class="input" id="password1" type="password"
+                                                            name="password1" placeholder="conferm password" title="" required>
+                    </div>
+                </div>
+                <label for="acceptRules"> </label>
+                <a href="/rules/" target="_blank"></a>
+                <input type="checkbox" name="acceptRules" required>
+
+
+                <div class="field has-text-centered">
+                    <div class="control">
+                        <button class="button is-primary">Sign Up</button>
+                    </div>
+                </div>
+                {% for error in errors %}
+                <div style="color: red;">{{ error }}</div>
+                {% endfor %}
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+	<script src="{% static 'js/signup.js' %}"></script>
+{% endblock %}
+
+	
