@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-19%hj1r8&n5%q8ybwf^515xka$g)j0p=9c_uwo^$n=_%ycoig_')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+# DEBUG = True
+DEBUG = str(os.environ.get("DEBUG")) == "1" 
+ALLOWED_HOSTS = [os.environ.get("HOST", "127.0.0.1")]
 
 
 # Application definition
@@ -144,11 +144,20 @@ USE_I18N = True
 
 USE_TZ = True
 
+STATICFILES_STORAGE = 'django_oss_storage.backends.OssStaticStorage'
+DEFAULT_FILE_STORAGE = 'django_oss_storage.backends.OssMediaStorage'
+OSS_ACCESS_KEY_ID = os.environ.get('OSS_ACCESS_KEY_ID', 'LTAI5t8xMjEJ7pfudCqkbxt3')
+OSS_ACCESS_KEY_SECRET = os.environ.get('OSS_ACCESS_KEY_SECRET', '4stoy0N3jvYlqV1xlyj75eYvl9NxPV')
+OSS_EXPIRE_TIME = os.environ.get('OSS_EXPIRE_TIME', 2592000)
+OSS_BUCKET_NAME = os.environ.get('OSS_BUCKET_NAME', 'test-hello-world-ssf')
+OSS_ENDPOINT = os.environ.get('OSS_ENDPOINT', 'oss-me-central-1.aliyuncs.com')
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_ROOT = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "src/static/"
 ]
@@ -157,7 +166,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 
 # Path where media is stored
-MEDIA_ROOT = BASE_DIR / 'media/'
+# MEDIA_ROOT = BASE_DIR / 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
