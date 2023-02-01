@@ -24,7 +24,7 @@ pip install django django-oss-storage psycopg2
 pip install -r requirements.txt
 
 
-
+sed -i 's/force_text/force_str/g' /usr/local/lib/python3.10/dist-packages/django_oss_storage/backends.py
 python3 SSF/manage.py makemigrations main
 python3 SSF/manage.py makemigrations
 python3 SSF/manage.py migrate
